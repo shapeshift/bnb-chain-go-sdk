@@ -9,7 +9,7 @@ import (
 func RegisterEventDatas(cdc *amino.Codec) {
 	cdc.RegisterInterface((*types.TMEventData)(nil), nil)
 	cdc.RegisterConcrete(EventDataNewBlockHeader{}, "tendermint/event/NewBlockHeader", nil)
-	cdc.RegisterConcrete(EventDataTx{}, "tendermint/event/Tx", nil)
+	cdc.RegisterConcrete(types.EventDataTx{}, "tendermint/event/Tx", nil)
 }
 
 // light weight event for benchmarking
@@ -18,9 +18,4 @@ type EventDataNewBlockHeader struct {
 
 	ResultBeginBlock abci.ResponseBeginBlock `json:"result_begin_block"`
 	ResultEndBlock   abci.ResponseEndBlock   `json:"result_end_block"`
-}
-
-// All txs fire EventDataTx
-type EventDataTx struct {
-	abci.TxResult
 }
