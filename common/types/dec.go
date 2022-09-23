@@ -19,8 +19,6 @@ const (
 var (
 	precisionReuse       = new(big.Int).Exp(big.NewInt(10), big.NewInt(Precision), nil).Int64()
 	precisionMultipliers []int64
-	zeroInt              = big.NewInt(0)
-	oneInt               = big.NewInt(1)
 	tenInt               = big.NewInt(10)
 )
 
@@ -92,7 +90,7 @@ func NewDecFromStr(str string) (d Dec, err error) {
 	return Dec{value}, nil
 }
 
-//nolint
+// nolint
 func (d Dec) IsNil() bool       { return false }               // is decimal nil
 func (d Dec) IsZero() bool      { return d.int64 == 0 }        // is equal to zero
 func (d Dec) Equal(d2 Dec) bool { return d.int64 == d2.int64 } // equal decimals
