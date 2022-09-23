@@ -8,13 +8,6 @@ import (
 	"github.com/tendermint/tendermint/proto/tendermint/version"
 )
 
-// Block defines the atomic unit of a Tendermint blockchain.
-type Block struct {
-	Header `json:"header"`
-}
-
-//-----------------------------------------------------------------------------
-
 // Header defines the structure of a Tendermint block header.
 // NOTE: changes to the Header should be duplicated in:
 // - header.Hash()
