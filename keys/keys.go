@@ -14,12 +14,10 @@ import (
 
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 
-	"github.com/binance-chain/go-sdk/common"
-	"github.com/binance-chain/go-sdk/common/ledger"
-	"github.com/binance-chain/go-sdk/common/types"
-	ctypes "github.com/binance-chain/go-sdk/common/types"
-	"github.com/binance-chain/go-sdk/common/uuid"
-	"github.com/binance-chain/go-sdk/types/tx"
+	"github.com/shapeshift/bnb-chain-go-sdk/common"
+	ctypes "github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/uuid"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/tx"
 	"github.com/tendermint/tendermint/crypto"
 )
 
@@ -63,12 +61,6 @@ func NewPrivateKeyManager(priKey string) (KeyManager, error) {
 	return &k, err
 }
 
-func NewLedgerKeyManager(path ledger.DerivationPath) (KeyManager, error) {
-	k := keyManager{}
-	err := k.recoveryFromLedgerKey(path)
-	return &k, err
-}
-
 type keyManager struct {
 	privKey  crypto.PrivKey
 	addr     ctypes.AccAddress
@@ -83,7 +75,7 @@ func (m *keyManager) ExportAsMnemonic() (string, error) {
 }
 
 func (m *keyManager) ExportAsPrivateKey() (string, error) {
-	secpPrivateKey, ok := m.privKey.(secp256k1.PrivKeySecp256k1)
+	secpPrivateKey, ok := m.privKey.(secp256k1.PrivKey)
 	if !ok {
 		return "", fmt.Errorf(" Only PrivKeySecp256k1 key is supported ")
 	}
@@ -121,7 +113,7 @@ func (m *keyManager) recoveryFromMnemonic(mnemonic, keyPath string) error {
 	if err != nil {
 		return err
 	}
-	priKey := secp256k1.PrivKeySecp256k1(derivedPriv)
+	priKey := secp256k1.PrivKey(derivedPriv[:])
 	addr := ctypes.AccAddress(priKey.PubKey().Address())
 	if err != nil {
 		return err
@@ -154,7 +146,7 @@ func (m *keyManager) recoveryFromKeyStore(keystoreFile string, auth string) erro
 	}
 	var keyBytesArray [32]byte
 	copy(keyBytesArray[:], keyBytes[:32])
-	priKey := secp256k1.PrivKeySecp256k1(keyBytesArray)
+	priKey := secp256k1.PrivKey(keyBytesArray[:])
 	addr := ctypes.AccAddress(priKey.PubKey().Address())
 	m.addr = addr
 	m.privKey = priKey
@@ -172,31 +164,10 @@ func (m *keyManager) recoveryFromPrivateKey(privateKey string) error {
 	}
 	var keyBytesArray [32]byte
 	copy(keyBytesArray[:], priBytes[:32])
-	priKey := secp256k1.PrivKeySecp256k1(keyBytesArray)
+	priKey := secp256k1.PrivKey(keyBytesArray[:])
 	addr := ctypes.AccAddress(priKey.PubKey().Address())
 	m.addr = addr
 	m.privKey = priKey
-	return nil
-}
-
-func (m *keyManager) recoveryFromLedgerKey(path ledger.DerivationPath) error {
-	if ledger.DiscoverLedger == nil {
-		return fmt.Errorf("no Ledger discovery function defined, please make sure you have added ledger to build tags and cgo is enabled")
-	}
-
-	device, err := ledger.DiscoverLedger()
-	if err != nil {
-		return fmt.Errorf("failed to find ledger device: %s", err.Error())
-	}
-
-	pkl, err := ledger.GenLedgerSecp256k1Key(path, device)
-	if err != nil {
-		return fmt.Errorf("failed to create PrivKeyLedgerSecp256k1: %s", err.Error())
-	}
-
-	addr := types.AccAddress(pkl.PubKey().Address())
-	m.addr = addr
-	m.privKey = pkl
 	return nil
 }
 
@@ -256,7 +227,7 @@ func generateKeyStore(privateKey crypto.PrivKey, password string) (*EncryptedKey
 	cipherParamsJSON := cipherparamsJSON{IV: hex.EncodeToString(iv)}
 	derivedKey := pbkdf2.Key([]byte(password), salt, 262144, 32, sha256.New)
 	encryptKey := derivedKey[:32]
-	secpPrivateKey, ok := privateKey.(secp256k1.PrivKeySecp256k1)
+	secpPrivateKey, ok := privateKey.(secp256k1.PrivKey)
 	if !ok {
 		return nil, fmt.Errorf(" Only PrivKeySecp256k1 key is supported ")
 	}

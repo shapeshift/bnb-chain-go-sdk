@@ -11,13 +11,12 @@ import (
 	"github.com/pkg/errors"
 	"github.com/tendermint/tendermint/crypto/tmhash"
 
-	"github.com/binance-chain/go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 )
 
 // SortJSON takes any JSON and returns it sorted by keys. Also, all white-spaces
 // are removed.
 // This method can be used to canonicalize JSON to be returned by GetSignBytes,
-// e.g. for the ledger integration.
 // If the passed JSON isn't valid it will return an error.
 func SortJSON(toSortJSON []byte) ([]byte, error) {
 	var c interface{}

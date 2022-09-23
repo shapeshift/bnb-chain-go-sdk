@@ -7,13 +7,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/binance-chain/go-sdk/common"
-	"github.com/binance-chain/go-sdk/common/types"
-	sdk "github.com/binance-chain/go-sdk/common/types"
-	"github.com/binance-chain/go-sdk/keys"
-	gtypes "github.com/binance-chain/go-sdk/types"
-	"github.com/binance-chain/go-sdk/types/msg"
-	"github.com/binance-chain/go-sdk/types/tx"
+	"github.com/shapeshift/bnb-chain-go-sdk/common"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	sdk "github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/keys"
+	gtypes "github.com/shapeshift/bnb-chain-go-sdk/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/msg"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/tx"
 	core_types "github.com/tendermint/tendermint/rpc/core/types"
 )
 

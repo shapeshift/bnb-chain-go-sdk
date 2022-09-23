@@ -3,10 +3,9 @@ package websocket
 import (
 	"encoding/json"
 
-	"github.com/binance-chain/go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 )
 
-//
 type AccountEvent struct {
 	EventType string              `json:"e"` // "e": "outboundAccountInfo"
 	EventTime int64               `json:"E"` // "E": 1499405658658,

@@ -61,15 +61,12 @@ NewKeyStoreKeyManager(file string, auth string) (KeyManager, error)
 
 NewPrivateKeyManager(priKey string) (KeyManager, error) 
 
-NewLedgerKeyManager(path ledger.DerivationPath) (KeyManager, error)
-
 ```
 - NewKeyManager. You will get a new private key without provide anything, you can export and save this `KeyManager`.
 - NewMnemonicKeyManager. You should provide your mnemonic, usually is a string of 24 words.
 - NewMnemonicPathKeyManager. The difference between `NewMnemonicKeyManager` is that you can use custom keypath to generate different `keyManager` while using the same mnemonic. 5 levels in BIP44 path: "purpose' / coin_type' / account' / change / address_index", "purpose' / coin_type'" is fixed as "44'/714'/", you can customize the rest part. 
 - NewKeyStoreKeyManager. You should provide a keybase json file and you password, you can download the key base json file when your create a wallet account.
 - NewPrivateKeyManager. You should provide a Hex encoded string of your private key.
-- NewLedgerKeyManager. You must have a ledger device with binance ledger app and connect it to your machine.
 
 Examples:
 
@@ -90,12 +87,6 @@ From raw private key string:
 ```GO
 priv := "9579fff0cab07a4379e845a890105004ba4c8276f8ad9d22082b2acbf02d884b"
 keyManager, err := NewPrivateKeyManager(priv)
-```
-
-From ledger device:
-```GO
-bip44Params := keys.NewBinanceBIP44Params(0, 0)
-keyManager, err := NewLedgerKeyManager(bip44Params.DerivationPath())
 ```
 
 We provide three export functions to persistent a Key Manager:
@@ -119,7 +110,6 @@ newkm, _ := NewKeyStoreKeyManager("TestGenerateKeyStoreNoError.json", "testpassw
 encryPlain2, _ := newkm.GetPrivKey().Sign([]byte("test plain"))
 assert.True(t, bytes.Equal(encryPlain1, encryPlain2))
 ```
-**As for ledger key, it can't be exported. Because its private key is saved on ledger device and no one can directly access it outside.** 
 
 ### Init Client
 

@@ -1,15 +1,18 @@
 package mock
 
 import (
-	"github.com/binance-chain/go-sdk/client/rpc"
+	"context"
 	"reflect"
 
-	cmn "github.com/tendermint/tendermint/libs/common"
+	"github.com/shapeshift/bnb-chain-go-sdk/client/rpc"
+
+	libbytes "github.com/tendermint/tendermint/libs/bytes"
 	"github.com/tendermint/tendermint/libs/log"
+	libservice "github.com/tendermint/tendermint/libs/service"
 	"github.com/tendermint/tendermint/rpc/client"
 	"github.com/tendermint/tendermint/rpc/core"
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	rpctypes "github.com/tendermint/tendermint/rpc/lib/types"
+	rpctypes "github.com/tendermint/tendermint/rpc/jsonrpc/types"
 	"github.com/tendermint/tendermint/types"
 )
 
@@ -19,7 +22,7 @@ import (
 // Nothing hidden here, so no New function, just construct it from
 // some parts, and swap them out them during the tests.
 type Client struct {
-	cmn.Service
+	libservice.Service
 	rpc.ABCIClient
 	rpc.SignClient
 	client.HistoryClient
@@ -34,7 +37,6 @@ var _ rpc.Client = Client{}
 
 // Call is used by recorders to save a call and response.
 // It can also be used to configure mock responses.
-//
 type Call struct {
 	Name     string
 	Args     interface{}
@@ -67,7 +69,7 @@ func (c Call) GetResponse(args interface{}) (interface{}, error) {
 	return nil, c.Error
 }
 
-func (c Client) Status() (*ctypes.ResultStatus, error) {
+func (c Client) Status(ctx context.Context) (*ctypes.ResultStatus, error) {
 	return core.Status(&rpctypes.Context{})
 }
 
@@ -75,11 +77,11 @@ func (c Client) ABCIInfo() (*ctypes.ResultABCIInfo, error) {
 	return core.ABCIInfo(&rpctypes.Context{})
 }
 
-func (c Client) ABCIQuery(path string, data cmn.HexBytes) (*ctypes.ResultABCIQuery, error) {
+func (c Client) ABCIQuery(path string, data libbytes.HexBytes) (*ctypes.ResultABCIQuery, error) {
 	return c.ABCIQueryWithOptions(path, data, client.DefaultABCIQueryOptions)
 }
 
-func (c Client) ABCIQueryWithOptions(path string, data cmn.HexBytes, opts client.ABCIQueryOptions) (*ctypes.ResultABCIQuery, error) {
+func (c Client) ABCIQueryWithOptions(path string, data libbytes.HexBytes, opts client.ABCIQueryOptions) (*ctypes.ResultABCIQuery, error) {
 	return core.ABCIQuery(&rpctypes.Context{}, path, data, opts.Height, opts.Prove)
 }
 
@@ -111,11 +113,11 @@ func (c Client) Health() (*ctypes.ResultHealth, error) {
 	return core.Health(&rpctypes.Context{})
 }
 
-func (c Client) BlockchainInfo(minHeight, maxHeight int64) (*ctypes.ResultBlockchainInfo, error) {
+func (c Client) BlockchainInfo(ctx context.Context, minHeight, maxHeight int64) (*ctypes.ResultBlockchainInfo, error) {
 	return core.BlockchainInfo(&rpctypes.Context{}, minHeight, maxHeight)
 }
 
-func (c Client) Genesis() (*ctypes.ResultGenesis, error) {
+func (c Client) Genesis(ctx context.Context) (*ctypes.ResultGenesis, error) {
 	return core.Genesis(&rpctypes.Context{})
 }
 
@@ -128,7 +130,7 @@ func (c Client) Commit(height *int64) (*ctypes.ResultCommit, error) {
 }
 
 func (c Client) Validators(height *int64) (*ctypes.ResultValidators, error) {
-	return core.Validators(&rpctypes.Context{}, height)
+	return core.Validators(&rpctypes.Context{}, height, nil, nil)
 }
 
 func (c Client) SetLogger(log.Logger) {

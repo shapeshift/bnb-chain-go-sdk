@@ -8,11 +8,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	sdk "github.com/binance-chain/go-sdk/client"
-	"github.com/binance-chain/go-sdk/client/websocket"
-	ctypes "github.com/binance-chain/go-sdk/common/types"
-	"github.com/binance-chain/go-sdk/keys"
-	"github.com/binance-chain/go-sdk/types"
+	sdk "github.com/shapeshift/bnb-chain-go-sdk/client"
+	"github.com/shapeshift/bnb-chain-go-sdk/client/websocket"
+	ctypes "github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/keys"
+	"github.com/shapeshift/bnb-chain-go-sdk/types"
 )
 
 func NewClient(t *testing.T) sdk.DexClient {

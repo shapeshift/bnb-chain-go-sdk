@@ -2,6 +2,7 @@ package e2e
 
 import (
 	"bytes"
+	"context"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -13,16 +14,16 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/tendermint/tendermint/libs/common"
 	tmquery "github.com/tendermint/tendermint/libs/pubsub/query"
 	"github.com/tendermint/tendermint/types"
 
-	"github.com/binance-chain/go-sdk/client/rpc"
-	"github.com/binance-chain/go-sdk/client/transaction"
-	ctypes "github.com/binance-chain/go-sdk/common/types"
-	"github.com/binance-chain/go-sdk/keys"
-	"github.com/binance-chain/go-sdk/types/msg"
-	"github.com/binance-chain/go-sdk/types/tx"
+	"github.com/shapeshift/bnb-chain-go-sdk/client/rpc"
+	"github.com/shapeshift/bnb-chain-go-sdk/client/transaction"
+	ctypes "github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/keys"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/msg"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/tx"
+	librand "github.com/tendermint/tendermint/libs/rand"
 )
 
 var (
@@ -329,7 +330,7 @@ func TestSubscribeEvent(t *testing.T) {
 	query := "tm.event = 'CompleteProposal'"
 	_, err := tmquery.New(query)
 	assert.NoError(t, err)
-	out, err := c.Subscribe(query, 10)
+	out, err := c.Subscribe(context.Background(), query, "", 10)
 	assert.NoError(t, err)
 	noMoreEvent := make(chan struct{}, 1)
 	go func() {
@@ -345,7 +346,7 @@ func TestSubscribeEvent(t *testing.T) {
 		}
 	}()
 	time.Sleep(10 * time.Second)
-	err = c.Unsubscribe(query)
+	err = c.Unsubscribe(context.Background(), query, "")
 	noMoreEvent <- struct{}{}
 	assert.NoError(t, err)
 	time.Sleep(3 * time.Second)
@@ -356,9 +357,9 @@ func TestSubscribeEventTwice(t *testing.T) {
 	query := "tm.event = 'CompleteProposal'"
 	_, err := tmquery.New(query)
 	assert.NoError(t, err)
-	_, err = c.Subscribe(query, 10)
+	_, err = c.Subscribe(context.Background(), query, "", 10)
 	assert.NoError(t, err)
-	_, err = c.Subscribe(query, 10)
+	_, err = c.Subscribe(context.Background(), query, "", 10)
 	assert.Error(t, err)
 }
 
@@ -570,9 +571,9 @@ func TestSubmitCSCProposal(t *testing.T) {
 	c.SetKeyManager(keyManager)
 
 	cscPrams := msg.CSCParamChange{
-		Key:    common.RandStr(common.RandIntn(255) + 1),
-		Value:  hex.EncodeToString(common.RandBytes(common.RandIntn(255) + 1)),
-		Target: hex.EncodeToString(common.RandBytes(20)),
+		Key:    librand.Str(librand.Intn(255) + 1),
+		Value:  hex.EncodeToString(librand.Bytes(librand.Intn(255) + 1)),
+		Target: hex.EncodeToString(librand.Bytes(20)),
 	}
 
 	res, err := c.SideChainSubmitCSCParamsProposal("title", cscPrams, ctypes.Coins{{msg.NativeToken, 5e8}}, 5*time.Second, "rialto", rpc.Sync)
