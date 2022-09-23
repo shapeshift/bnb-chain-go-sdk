@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/binance-chain/go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 	"github.com/tendermint/tendermint/crypto"
 )
 
@@ -131,7 +131,7 @@ func NewMsgRemoveValidator(launcherAddr types.AccAddress, valAddr types.ValAddre
 	}
 }
 
-//nolint
+// nolint
 func (msg MsgRemoveValidator) Route() string { return MsgRoute }
 func (msg MsgRemoveValidator) Type() string  { return "remove_validator" }
 func (msg MsgRemoveValidator) GetSigners() []types.AccAddress {

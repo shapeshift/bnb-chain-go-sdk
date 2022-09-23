@@ -3,14 +3,14 @@ package types
 import (
 	"time"
 
-	"github.com/tendermint/tendermint/libs/common"
+	libbytes "github.com/tendermint/tendermint/libs/bytes"
 )
 
 // Account definition
 type ResultStatus struct {
-	NodeInfo      NodeInfo      `json:"node_info"`
-	SyncInfo      SyncInfo      `json:"sync_info"`
-	ValidatorInfo ValidatorInfo `json:"validator_info"`
+	NodeInfo      NodeInfo          `json:"node_info"`
+	SyncInfo      SyncInfo          `json:"sync_info"`
+	ValidatorInfo ValidatorNodeInfo `json:"validator_info"`
 }
 
 type NodeInfo struct {
@@ -21,26 +21,26 @@ type NodeInfo struct {
 
 	// Check compatibility.
 	// Channels are HexBytes so easier to read as JSON
-	Network  string          `json:"network"`  // network/chain ID
-	Version  string          `json:"version"`  // major.minor.revision
-	Channels common.HexBytes `json:"channels"` // channels this node knows about
+	Network  string            `json:"network"`  // network/chain ID
+	Version  string            `json:"version"`  // major.minor.revision
+	Channels libbytes.HexBytes `json:"channels"` // channels this node knows about
 
 	// ASCIIText fields
 	Moniker string        `json:"moniker"` // arbitrary moniker
 	Other   NodeInfoOther `json:"other"`   // other application specific data
 }
 
-type ValidatorInfo struct {
-	Address     common.HexBytes `json:"address"`
-	PubKey      []uint8         `json:"pub_key"`
-	VotingPower int64           `json:"voting_power"`
+type ValidatorNodeInfo struct {
+	Address     libbytes.HexBytes `json:"address"`
+	PubKey      []uint8           `json:"pub_key"`
+	VotingPower int64             `json:"voting_power"`
 }
 type SyncInfo struct {
-	LatestBlockHash   common.HexBytes `json:"latest_block_hash"`
-	LatestAppHash     common.HexBytes `json:"latest_app_hash"`
-	LatestBlockHeight int64           `json:"latest_block_height"`
-	LatestBlockTime   time.Time       `json:"latest_block_time"`
-	CatchingUp        bool            `json:"catching_up"`
+	LatestBlockHash   libbytes.HexBytes `json:"latest_block_hash"`
+	LatestAppHash     libbytes.HexBytes `json:"latest_app_hash"`
+	LatestBlockHeight int64             `json:"latest_block_height"`
+	LatestBlockTime   time.Time         `json:"latest_block_time"`
+	CatchingUp        bool              `json:"catching_up"`
 }
 
 type NodeInfoOther struct {

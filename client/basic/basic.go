@@ -9,9 +9,9 @@ import (
 
 	"gopkg.in/resty.v1"
 
-	"github.com/binance-chain/go-sdk/types"
-	"github.com/binance-chain/go-sdk/types/tx"
 	"github.com/gorilla/websocket"
+	"github.com/shapeshift/bnb-chain-go-sdk/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/tx"
 )
 
 const (
@@ -34,7 +34,7 @@ type client struct {
 }
 
 func NewClient(baseUrl string, apiKey string) BasicClient {
-	return &client{baseUrl: baseUrl, apiUrl: fmt.Sprintf("%s://%s", types.DefaultApiSchema, baseUrl+types.DefaultAPIVersionPrefix),apiKey:apiKey}
+	return &client{baseUrl: baseUrl, apiUrl: fmt.Sprintf("%s://%s", types.DefaultApiSchema, baseUrl+types.DefaultAPIVersionPrefix), apiKey: apiKey}
 }
 
 func (c *client) Get(path string, qp map[string]string) ([]byte, int, error) {

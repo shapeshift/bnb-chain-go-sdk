@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/binance-chain/go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 
 	"github.com/pkg/errors"
 
-	"github.com/binance-chain/go-sdk/common"
+	"github.com/shapeshift/bnb-chain-go-sdk/common"
 )
 
 // constants
@@ -197,7 +197,8 @@ type Prophecy struct {
 }
 
 // DBProphecy is what the prophecy becomes when being saved to the database.
-//  Tendermint/Amino does not support maps so we must serialize those variables into bytes.
+//
+//	Tendermint/Amino does not support maps so we must serialize those variables into bytes.
 type DBProphecy struct {
 	ID              string `json:"id"`
 	Status          Status `json:"status"`
@@ -242,7 +243,7 @@ func (dbProphecy DBProphecy) DeserializeFromDB() (Prophecy, error) {
 	}, nil
 }
 
-//Validate and check if it's mini token
+// Validate and check if it's mini token
 func IsValidMiniTokenSymbol(symbol string) bool {
 	return ValidateMiniTokenSymbol(symbol) == nil
 }

@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/binance-chain/go-sdk/common/types"
-	"github.com/binance-chain/go-sdk/types/msg"
-	"github.com/binance-chain/go-sdk/types/tx"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/msg"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/tx"
 	"github.com/tendermint/go-amino"
 	coretypes "github.com/tendermint/tendermint/rpc/core/types"
 )
@@ -153,7 +153,7 @@ func (c *HTTP) SideChainUnjail(sideChainId string, valAddr types.ValAddress, syn
 	return c.Broadcast(m, syncType, options...)
 }
 
-//Query a validator
+// Query a validator
 func (c *HTTP) QuerySideChainValidator(sideChainId string, valAddr types.ValAddress) (*types.Validator, error) {
 	storePrefix, err := c.getSideChainStorePrefixKey(sideChainId)
 
@@ -254,7 +254,7 @@ func (c *HTTP) QuerySideChainTopValidators(sideChainId string, top int) ([]types
 	return validators, nil
 }
 
-//Query a delegation based on address and validator address
+// Query a delegation based on address and validator address
 func (c *HTTP) QuerySideChainDelegation(sideChainId string, delAddr types.AccAddress, valAddr types.ValAddress) (*types.DelegationResponse, error) {
 	params := types.QueryBondsParams{
 		BaseParams:    types.NewBaseParams(sideChainId),
@@ -282,7 +282,7 @@ func (c *HTTP) QuerySideChainDelegation(sideChainId string, delAddr types.AccAdd
 	return &delResponse, nil
 }
 
-//Query all delegations made from one delegator
+// Query all delegations made from one delegator
 func (c *HTTP) QuerySideChainDelegations(sideChainId string, delAddr types.AccAddress) ([]types.DelegationResponse, error) {
 	params := types.QueryDelegatorParams{
 		BaseParams:    types.NewBaseParams(sideChainId),
@@ -311,7 +311,7 @@ func (c *HTTP) QuerySideChainDelegations(sideChainId string, delAddr types.AccAd
 	return delegationResponses, nil
 }
 
-//Query a redelegation record based on delegator and a source and destination validator address
+// Query a redelegation record based on delegator and a source and destination validator address
 func (c *HTTP) QuerySideChainRedelegation(sideChainId string, delAddr types.AccAddress, valSrcAddr types.ValAddress,
 	valDstAddr types.ValAddress) (*types.Redelegation, error) {
 	storePrefix, err := c.getSideChainStorePrefixKey(sideChainId)
@@ -338,7 +338,7 @@ func (c *HTTP) QuerySideChainRedelegation(sideChainId string, delAddr types.AccA
 	return &result, nil
 }
 
-//Query all redelegations records for one delegator
+// Query all redelegations records for one delegator
 func (c *HTTP) QuerySideChainRedelegations(sideChainId string, delAddr types.AccAddress) ([]types.Redelegation, error) {
 	storePrefix, err := c.getSideChainStorePrefixKey(sideChainId)
 	if err != nil {
@@ -369,7 +369,7 @@ func (c *HTTP) QuerySideChainRedelegations(sideChainId string, delAddr types.Acc
 	return redels, nil
 }
 
-//Query an unbonding-delegation record based on delegator and validator address
+// Query an unbonding-delegation record based on delegator and validator address
 func (c *HTTP) QuerySideChainUnbondingDelegation(sideChainId string, valAddr types.ValAddress, delAddr types.AccAddress) (*types.UnbondingDelegation, error) {
 	storePrefix, err := c.getSideChainStorePrefixKey(sideChainId)
 	if err != nil {
@@ -396,7 +396,7 @@ func (c *HTTP) QuerySideChainUnbondingDelegation(sideChainId string, valAddr typ
 	return &ubd, nil
 }
 
-//Query all unbonding-delegations records for one delegator
+// Query all unbonding-delegations records for one delegator
 func (c *HTTP) QuerySideChainUnbondingDelegations(sideChainId string, delAddr types.AccAddress) ([]types.UnbondingDelegation, error) {
 	storePrefix, err := c.getSideChainStorePrefixKey(sideChainId)
 	if err != nil {

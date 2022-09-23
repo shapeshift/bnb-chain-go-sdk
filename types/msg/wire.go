@@ -7,7 +7,6 @@ import (
 var MsgCdc = amino.NewCodec()
 
 func RegisterCodec(cdc *amino.Codec) {
-
 	cdc.RegisterInterface((*Msg)(nil), nil)
 
 	cdc.RegisterConcrete(SideChainSubmitProposalMsg{}, "cosmos-sdk/MsgSideChainSubmitProposal", nil)

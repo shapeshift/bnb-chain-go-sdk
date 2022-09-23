@@ -2,9 +2,8 @@ package tx
 
 import (
 	"github.com/tendermint/go-amino"
-	"github.com/tendermint/tendermint/crypto/encoding/amino"
 
-	"github.com/binance-chain/go-sdk/types/msg"
+	"github.com/shapeshift/bnb-chain-go-sdk/types/msg"
 )
 
 // cdc global variable
@@ -17,6 +16,5 @@ func RegisterCodec(cdc *amino.Codec) {
 }
 
 func init() {
-	cryptoAmino.RegisterAmino(Cdc)
 	RegisterCodec(Cdc)
 }

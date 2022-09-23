@@ -8,7 +8,7 @@ import (
 
 	"github.com/tendermint/go-amino"
 
-	"github.com/binance-chain/go-sdk/common/types"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 )
 
 const (
@@ -24,7 +24,7 @@ const (
 	MaxSideChainIdLength = 20
 )
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 // SideChainSubmitProposalMsg
 type SideChainSubmitProposalMsg struct {
 	Title          string           `json:"title"`           //  Title of the proposal
@@ -48,7 +48,7 @@ func NewSideChainSubmitProposalMsg(title string, description string, proposalTyp
 	}
 }
 
-//nolint
+// nolint
 func (msg SideChainSubmitProposalMsg) Route() string { return MsgRoute }
 func (msg SideChainSubmitProposalMsg) Type() string  { return MsgTypeSideSubmitProposal }
 
@@ -110,7 +110,7 @@ func (msg SideChainSubmitProposalMsg) GetInvolvedAddresses() []types.AccAddress 
 	return msg.GetSigners()
 }
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 // SideChainDepositMsg
 type SideChainDepositMsg struct {
 	ProposalID  int64            `json:"proposal_id"` // ID of the proposal

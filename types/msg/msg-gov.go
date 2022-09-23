@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/binance-chain/go-sdk/common/types"
 	"github.com/pkg/errors"
+	"github.com/shapeshift/bnb-chain-go-sdk/common/types"
 	"github.com/tendermint/go-amino"
 )
 
@@ -21,7 +21,7 @@ const (
 
 type VoteOption byte
 
-//nolint
+// nolint
 const (
 	OptionEmpty      VoteOption = 0x00
 	OptionYes        VoteOption = 0x01
@@ -111,7 +111,7 @@ func (vo VoteOption) Format(s fmt.State, verb rune) {
 // Type that represents Proposal Type as a byte
 type ProposalKind byte
 
-//nolint
+// nolint
 const (
 	ProposalTypeNil             ProposalKind = 0x00
 	ProposalTypeText            ProposalKind = 0x01
@@ -222,7 +222,7 @@ func (pt ProposalKind) Format(s fmt.State, verb rune) {
 	}
 }
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 type ListTradingPairParams struct {
 	BaseAssetSymbol  string    `json:"base_asset_symbol"`  // base asset symbol
 	QuoteAssetSymbol string    `json:"quote_asset_symbol"` // quote asset symbol
@@ -231,7 +231,7 @@ type ListTradingPairParams struct {
 	ExpireTime       time.Time `json:"expire_time"`        // expire time
 }
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 // SubmitProposalMsg
 type SubmitProposalMsg struct {
 	Title          string           `json:"title"`           //  Title of the proposal
@@ -253,7 +253,7 @@ func NewMsgSubmitProposal(title string, description string, proposalType Proposa
 	}
 }
 
-//nolint
+// nolint
 func (msg SubmitProposalMsg) Route() string { return MsgRoute }
 func (msg SubmitProposalMsg) Type() string  { return "submit_proposal" }
 
@@ -318,7 +318,7 @@ func (msg SubmitProposalMsg) GetInvolvedAddresses() []types.AccAddress {
 	return msg.GetSigners()
 }
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 // DepositMsg
 type DepositMsg struct {
 	ProposalID int64            `json:"proposal_id"` // ID of the proposal
@@ -383,7 +383,7 @@ func (msg DepositMsg) GetInvolvedAddresses() []types.AccAddress {
 	return msg.GetSigners()
 }
 
-//-----------------------------------------------------------
+// -----------------------------------------------------------
 // VoteMsg
 type VoteMsg struct {
 	ProposalID int64            `json:"proposal_id"` // ID of the proposal
